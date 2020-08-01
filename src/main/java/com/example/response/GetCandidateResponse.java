@@ -1,6 +1,5 @@
 package com.example.response;
 
-import com.example.entity.Candidate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class GetCandidateResponse {
 	
-	private Candidate candidate;
+	private CandidateResponse candidate;
 	private boolean isVoted;
 
 }

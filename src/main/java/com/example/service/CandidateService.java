@@ -10,6 +10,8 @@ import com.example.dao.CandidateDao;
 import com.example.dao.VotersDao;
 import com.example.entity.Candidate;
 import com.example.exception.NoCandidateFound;
+import com.example.response.CandidateResponse;
+import com.example.response.ExpertResponse;
 import com.example.response.GetCandidateResponse;
 import com.example.response.GetUsers;
 
@@ -50,7 +52,8 @@ public class CandidateService {
 	public GetCandidateResponse getCandidate(Long candidateId, String ip_add) throws NoCandidateFound {
 		GetCandidateResponse response = new GetCandidateResponse();
 		if (candidateDao.findById(candidateId).isPresent()) {
-			response.setCandidate(candidateDao.findById(candidateId).get());
+			Candidate candidate = candidateDao.findById(candidateId).get();
+			response.setCandidate(setCandidateResponse(candidate));
 			if (votersDao.findByIp_add(ip_add).isEmpty())
 				response.setVoted(false);
 			else
@@ -60,6 +63,20 @@ public class CandidateService {
 
 		}
 		throw new NoCandidateFound("No candidate is available for given Id :" + candidateId);
+	}
+
+	private CandidateResponse setCandidateResponse(Candidate candidate) {
+		CandidateResponse candidateResponse = new CandidateResponse.CandidateResponseBuilder()
+				.candidateId(candidate.getCandidateId()).candidateName(candidate.getCandidateName())
+				.candiateExperienceLevel(candidate.getCandiateExperienceLevel().getRating())
+				.challangesSolved(candidate.getChallangesSolved())
+				.expertIn(new ExpertResponse.ExpertResponseBuilder().algo(candidate.getExpertIn().getAlgo().getRating())
+						.angular(candidate.getExpertIn().getAngular().getRating())
+						.ds(candidate.getExpertIn().getDs().getRating())
+						.java(candidate.getExpertIn().getJava().getRating())
+						.python(candidate.getExpertIn().getPython().getRating()).build())
+				.build();
+		return candidateResponse;
 	}
 
 	public void deleteCandidate(Long candidateId) throws NoCandidateFound {
