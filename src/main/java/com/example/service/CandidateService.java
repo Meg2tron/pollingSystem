@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.CandidateDao;
+import com.example.dao.UsersDao;
 import com.example.dao.VotersDao;
 import com.example.entity.Candidate;
+import com.example.entity.Users;
 import com.example.exception.NoCandidateFound;
 import com.example.response.CandidateResponse;
 import com.example.response.ExpertResponse;
@@ -23,6 +26,9 @@ public class CandidateService {
 
 	@Autowired
 	private VotersDao votersDao;
+
+	@Autowired
+	private UsersDao usersDao;
 
 	public List<GetUsers> getAllCandidates() {
 		List<Candidate> candidates = candidateDao.findAll();
@@ -40,12 +46,33 @@ public class CandidateService {
 	}
 
 	public Candidate addCandidate(Candidate candidate) {
+		addUser(candidate);
 		return candidateDao.save(candidate);
 	}
 
+	private Users addUser(Candidate candidate) {
+		Users user = new Users();
+		user.setUserName(candidate.getCandidateName());
+		user.setUserRole("CANDIDATE");
+		user.setUserPassword("password");
+
+		return usersDao.save(user);
+	}
+
+	private Users updateUser(Candidate candidate) {
+		Users user = usersDao.findByuserName(candidate.getCandidateName())
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+		user.setUserName(candidate.getCandidateName());
+
+		return usersDao.save(user);
+	}
+
 	public Candidate updateCandidate(Candidate candidate, Long candidateId) throws NoCandidateFound {
-		if (candidateId == candidate.getCandidateId() && candidateDao.findById(candidateId).isPresent())
+		if (candidateId == candidate.getCandidateId() && candidateDao.findById(candidateId).isPresent()) {
+			updateUser(candidate);
 			return candidateDao.save(candidate);
+		}
+
 		throw new NoCandidateFound("No candidate is available for given Id :" + candidateId);
 	}
 
@@ -80,8 +107,16 @@ public class CandidateService {
 	}
 
 	public void deleteCandidate(Long candidateId) throws NoCandidateFound {
-		if (candidateDao.findById(candidateId).isPresent())
+		if (candidateDao.findById(candidateId).isPresent()) {
+			deleteUser(candidateDao.findById(candidateId).get().getCandidateName());
 			candidateDao.deleteById(candidateId);
+		}
 		throw new NoCandidateFound("No candidate is available for given Id :" + candidateId);
+	}
+
+	private void deleteUser(String candidateName) {
+		usersDao.delete(usersDao.findByuserName(candidateName)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found")));
+
 	}
 }

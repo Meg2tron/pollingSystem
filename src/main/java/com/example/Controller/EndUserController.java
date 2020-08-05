@@ -35,7 +35,7 @@ public class EndUserController {
 		return ResponseEntity.ok(candidateService.getAllCandidates());
 	}
 
-	@GetMapping(value = "/{candidateId}/")
+	@PostMapping(value = "/{candidateId}/")
 	public ResponseEntity<GetCandidateResponse> getCandidateById(@RequestBody GetUserRequest userRequest,
 			@PathVariable Long candidateId) throws NoCandidateFound {
 		return ResponseEntity.ok(candidateService.getCandidate(candidateId, userRequest.getIp_add()));

@@ -12,3 +12,6 @@ VALUES      (1,5,5,5,5,5);
 
 INSERT INTO candidate(candidate_id,candidate_name,challanges_solved,candiate_experience_level,expert_in)
 VALUES      (1,'Kapil',5,5,1);
+
+INSERT INTO users(user_id,user_name,user_password,user_role)
+VALUES      (1,'Kapil','password','CANDIDATE');

@@ -1,8 +1,11 @@
 package com.example.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Candidate;
 import com.example.exception.NoCandidateFound;
+import com.example.response.GetUsers;
 import com.example.service.CandidateService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -21,6 +25,11 @@ public class AdminController {
 
 	@Autowired
 	private CandidateService candidateService;
+
+	@GetMapping(value = "/")
+	public ResponseEntity<List<GetUsers>> getCandidates() {
+		return ResponseEntity.ok(candidateService.getAllCandidates());
+	}
 
 	@PostMapping(value = "/")
 	public ResponseEntity<Candidate> saveCandidate(@RequestBody Candidate candidate) {
