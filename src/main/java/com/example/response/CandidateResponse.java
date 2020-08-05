@@ -12,7 +12,7 @@ public class CandidateResponse {
 	private Long candidateId;
 	private String candidateName;
 	private int challangesSolved;
-	private Long candiateExperienceLevel;
+	private Long candidateExperienceLevel;
 	private ExpertResponse expertIn;
 
 	public static class CandidateResponseBuilder {
@@ -55,7 +55,7 @@ public class CandidateResponse {
 			response.candidateId = this.candidateId;
 			response.candidateName = this.candidateName;
 			response.challangesSolved = this.challangesSolved;
-			response.candiateExperienceLevel = this.candiateExperienceLevel;
+			response.candidateExperienceLevel = this.candiateExperienceLevel;
 			response.expertIn = this.expertIn;
 			return response;
 

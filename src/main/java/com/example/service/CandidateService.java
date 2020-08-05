@@ -101,7 +101,7 @@ public class CandidateService {
 						.angular(candidate.getExpertIn().getAngular().getRating())
 						.ds(candidate.getExpertIn().getDs().getRating())
 						.java(candidate.getExpertIn().getJava().getRating())
-						.python(candidate.getExpertIn().getPython().getRating()).build())
+						.python(candidate.getExpertIn().getPython().getRating()).expertId(candidate.getExpertIn().getExpertId()).build())
 				.build();
 		return candidateResponse;
 	}
