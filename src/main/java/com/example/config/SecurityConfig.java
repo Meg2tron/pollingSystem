@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailService);
+		auth.userDetailsService(userDetailService).passwordEncoder(getPasswordEncoder());
 	}
 
 	@Bean
@@ -30,23 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return NoOpPasswordEncoder.getInstance();
 	}
 
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//	    auth.jdbcAuthentication().dataSource(datasource).getUserDetailsService();
-////	        .inMemoryAuthentication()
-////	            .withUser("admin").password("password").roles("ADMIN"); // admin in your case
-//	}
-
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-//		http.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
-//				"/configuration/security", "/swagger-ui.html", "/webjars/**", "/h2-console/**", "/poll/**");
-//		http.authorizeRequests().antMatchers("/admin/").hasAuthority("ADMIN").antMatchers("/candidate/**")
-//				.hasAuthority("CANDIDATE").and().formLogin();
-//		http.csrf().disable().authenticated()
-//		.and().httpBasic()
-		http.csrf().disable().authorizeRequests().antMatchers("/admin/").hasAuthority("ADMIN")
+		http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMIN")
 				.antMatchers("/candidate/**").hasAuthority("CANDIDATE").and().httpBasic();
+		http.headers().frameOptions().sameOrigin();
 
 	}
 }

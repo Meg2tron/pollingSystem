@@ -14,4 +14,6 @@ INSERT INTO candidate(candidate_id,candidate_name,challanges_solved,candiate_exp
 VALUES      (1,'Kapil',5,5,1);
 
 INSERT INTO users(user_id,user_name,user_password,user_role)
-VALUES      (1,'Kapil','password','CANDIDATE');
+VALUES      (1,'Kapil','password','CANDIDATE'),
+(2,'Kaps','password','ADMIN')
+;

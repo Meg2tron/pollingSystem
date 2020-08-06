@@ -50,13 +50,14 @@ public class CandidateService {
 		return candidateDao.save(candidate);
 	}
 
-	private Users addUser(Candidate candidate) {
+	private void addUser(Candidate candidate) {
 		Users user = new Users();
 		user.setUserName(candidate.getCandidateName());
-		user.setUserRole("CANDIDATE");
-		user.setUserPassword("password");
-
-		return usersDao.save(user);
+		if (!usersDao.findByuserName(candidate.getCandidateName()).isPresent()) {
+			user.setUserRole("CANDIDATE");
+			user.setUserPassword("password");
+			usersDao.save(user);
+		}
 	}
 
 	private Users updateUser(Candidate candidate) {
@@ -101,7 +102,8 @@ public class CandidateService {
 						.angular(candidate.getExpertIn().getAngular().getRating())
 						.ds(candidate.getExpertIn().getDs().getRating())
 						.java(candidate.getExpertIn().getJava().getRating())
-						.python(candidate.getExpertIn().getPython().getRating()).expertId(candidate.getExpertIn().getExpertId()).build())
+						.python(candidate.getExpertIn().getPython().getRating())
+						.expertId(candidate.getExpertIn().getExpertId()).build())
 				.build();
 		return candidateResponse;
 	}

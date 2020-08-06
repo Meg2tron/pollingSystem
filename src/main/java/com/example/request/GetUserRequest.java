@@ -9,6 +9,6 @@ public class GetUserRequest {
 	
 	private Long candidateId;
 	
-	private String ip_add;
+	private String ipAdd;
 
 }
