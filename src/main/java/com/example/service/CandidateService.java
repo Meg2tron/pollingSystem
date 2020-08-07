@@ -13,6 +13,7 @@ import com.example.dao.VotersDao;
 import com.example.entity.Candidate;
 import com.example.entity.Users;
 import com.example.exception.NoCandidateFound;
+import com.example.exception.NotAuthorized;
 import com.example.response.CandidateResponse;
 import com.example.response.ExpertResponse;
 import com.example.response.GetCandidateResponse;
@@ -21,6 +22,7 @@ import com.example.response.GetUsers;
 @Service
 public class CandidateService {
 
+	
 	@Autowired
 	private CandidateDao candidateDao;
 
@@ -66,6 +68,16 @@ public class CandidateService {
 		user.setUserName(candidate.getCandidateName());
 
 		return usersDao.save(user);
+	}
+	
+	public Candidate updateCandidateByCandidate(Candidate candidate, Long candidateId,String principal) throws NoCandidateFound, NotAuthorized
+	{
+		if(candidate.getCandidateId()==candidateId && candidateDao.findBycandidateName(principal).isPresent() && candidateId== candidateDao.findBycandidateName(principal).get().getCandidateId())
+		{
+			return updateCandidate(candidate, candidateId);
+		}
+		
+		throw new NotAuthorized("Not Authorized to change Candidate Details");
 	}
 
 	public Candidate updateCandidate(Candidate candidate, Long candidateId) throws NoCandidateFound {

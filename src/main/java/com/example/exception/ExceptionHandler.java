@@ -18,5 +18,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_FOUND);
 	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(NotAuthorized.class)
+	public final ResponseEntity<ErrorResponse> handleNotAuthorized(NotAuthorized exception)
+	{
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE, exception.getLocalizedMessage());
+		
+		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_ACCEPTABLE);
+	}
 
 }
