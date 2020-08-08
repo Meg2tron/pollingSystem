@@ -109,7 +109,7 @@ public class CandidateService {
 		CandidateResponse candidateResponse = new CandidateResponse.CandidateResponseBuilder()
 				.candidateId(candidate.getCandidateId()).candidateName(candidate.getCandidateName())
 				.candiateExperienceLevel(candidate.getCandiateExperienceLevel().getRating())
-				.challangesSolved(candidate.getChallangesSolved())
+				.challangesSolved(candidate.getChallangesSolved()).noOfVotes(votesForCandidate(candidate))
 				.expertIn(new ExpertResponse.ExpertResponseBuilder().algo(candidate.getExpertIn().getAlgo().getRating())
 						.angular(candidate.getExpertIn().getAngular().getRating())
 						.ds(candidate.getExpertIn().getDs().getRating())
@@ -132,5 +132,10 @@ public class CandidateService {
 		usersDao.delete(usersDao.findByuserName(candidateName)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found")));
 
+	}
+	
+	private int votesForCandidate(Candidate candidate)
+	{
+		return votersDao.findByvotedTo(candidate).size();
 	}
 }

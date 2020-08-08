@@ -12,6 +12,7 @@ public class CandidateResponse {
 	private Long candidateId;
 	private String candidateName;
 	private int challangesSolved;
+	private int noOfVotes;
 	private Long candidateExperienceLevel;
 	private ExpertResponse expertIn;
 
@@ -20,6 +21,7 @@ public class CandidateResponse {
 		private Long candidateId;
 		private String candidateName;
 		private int challangesSolved;
+		private int noOfVotes;
 		private Long candiateExperienceLevel;
 		private ExpertResponse expertIn;
 
@@ -42,6 +44,12 @@ public class CandidateResponse {
 			this.candiateExperienceLevel = candiateExperienceLevel;
 			return this;
 		}
+		
+		public CandidateResponseBuilder noOfVotes(int votes)
+		{
+			this.noOfVotes = votes;
+			return this;
+		}
 
 		public CandidateResponseBuilder expertIn(ExpertResponse expertIn) {
 			this.expertIn = new ExpertResponse.ExpertResponseBuilder().algo(expertIn.getAlgo())
@@ -55,6 +63,7 @@ public class CandidateResponse {
 			response.candidateId = this.candidateId;
 			response.candidateName = this.candidateName;
 			response.challangesSolved = this.challangesSolved;
+			response.noOfVotes = this.noOfVotes;
 			response.candidateExperienceLevel = this.candiateExperienceLevel;
 			response.expertIn = this.expertIn;
 			return response;
